@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/scallop722/smart-assistant#readme",
   "dependencies": {
+    "electron": "^13.1.7",
+    "firebase-admin": "^9.11.0",
     "moment": "^2.29.1",
     "node-wav-player": "^0.2.0"
   }
