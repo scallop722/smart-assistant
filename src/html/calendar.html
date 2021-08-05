@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../css/calendar.css">
+</head>
+<body>
+  <div class="wrapper">
+    <!-- xxxx年xx月を表示 -->
+    <h1 id="header"></h1>
+
+    <!-- ボタンクリックで月移動 -->
+    <div id="next-prev-button">
+      <button id="prev" onclick="prev()">‹</button>
+      <button id="next" onclick="next()">›</button>
+    </div>
+
+    <!-- カレンダー -->
+    <div id="calendar"></div>
+    
+    <form>
+      <label for="event">予定</label>
+      <input type="text" name="event"><br>
+      <label for="homework">宿題</label>
+      <input type="text" name="homework"><br>
+      <label for="submissions">提出物</label>
+      <input type="text" name="submissions"><br>
+      <button type="button" onclick="register()">登録</button>
+    </form>
+  </div>
+  <script src="../js/calendar.js" type="text/javascript"></script>
+</body>
+</html>
