@@ -73,10 +73,14 @@ function createProcess(year, month) {
     return calendar;
 }
 
-function register() {
-    const ipc = require('electron').ipcRenderer
-    ipc.send('register', 'ping')
-    ipc.on('registered', function (event, arg) {
-        alert("登録完了しました。")
-    })
+async function register() {
+    const homework = document.getElementsByName("homework");
+    const event = document.getElementsByName("event");
+    const submission = document.getElementsByName("submissions");
+    
+    await window.myapi.register({
+        homework: homework[0].value,
+        event: event[0].value,
+        submission: submission[0].value
+    });
 }

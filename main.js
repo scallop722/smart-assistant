@@ -1,5 +1,14 @@
-const { app, BrowserWindow } = require('electron')
-const ipc = require('electron').ipcMain
+const { app, BrowserWindow, ipcMain } = require('electron')
+const path = require('path')
+
+var admin = require("firebase-admin");
+var serviceAccount = require("./smart-assistant-9f6ad-firebase-adminsdk-dya3y-0d2c9fb816.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+const calendar = db.collection("calendar");
 
 let win
 
@@ -8,8 +17,7 @@ function createWindow () {
         width: 800, 
         height: 600,
         webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true
+            preload: path.join(__dirname, 'preload.js')
         } 
     })
     win.loadFile('./src/html/calendar.html')
@@ -31,7 +39,10 @@ app.on('activate', () => {
     }
 })
 
-ipc.on('register', function (event, value) {
-    console.log(value)
-    event.sender.send('registered', 'pong')
+ipcMain.handle('register', (event, data) => {
+  calendar.doc("2021-10-31").set({
+    homework: data.homework,
+    event: data.event,
+    submissions: data.submission
+  });
 })
