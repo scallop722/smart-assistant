@@ -40,7 +40,7 @@ app.on('activate', () => {
 })
 
 ipcMain.handle('register', (event, data) => {
-  calendar.doc("2021-10-31").set({
+  calendar.doc(data.date).set({
     homework: data.homework,
     event: data.event,
     submissions: data.submission

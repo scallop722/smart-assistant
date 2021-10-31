@@ -3,10 +3,27 @@ const today = new Date();
 // 月末だとずれる可能性があるため、1日固定で取得
 var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
+var selectYear = today.getFullYear();
+var selectMonth = today.getMonth() + 1;
+var selectDay = today.getDate();
+
 // 初期表示
 window.onload = function () {
     showProcess(today, calendar);
 };
+
+function createDateSelectEvent() {
+    document.querySelectorAll("#calendar td").forEach(function(td) {
+        td.addEventListener("click", function(e) {
+            selectYear = showDate.getFullYear();
+            selectMonth = showDate.getMonth() + 1;
+            selectDay = Number(e.target.innerText);
+            
+            showProcess(showDate);
+        }, false);
+    });
+}
+
 // 前の月表示
 function prev(){
     showDate.setMonth(showDate.getMonth() - 1);
@@ -27,6 +44,8 @@ function showProcess(date) {
 
     var calendar = createProcess(year, month);
     document.querySelector('#calendar').innerHTML = calendar;
+    
+    createDateSelectEvent();
 }
 
 // カレンダー作成
@@ -59,9 +78,9 @@ function createProcess(year, month) {
             } else {
                 // 当月の日付を曜日に照らし合わせて設定
                 count++;
-                if(year == today.getFullYear()
-                    && month == (today.getMonth())
-                    && count == today.getDate()) {
+                if(year == selectYear
+                    && month == (selectMonth - 1)
+                    && count == selectDay) {
                     calendar += "<td class='today'>" + count + "</td>";
                 } else {
                     calendar += "<td>" + count + "</td>";
@@ -79,6 +98,7 @@ async function register() {
     const submission = document.getElementsByName("submissions");
     
     await window.myapi.register({
+        date : selectYear + "-" + selectMonth + "-" + selectDay, 
         homework: homework[0].value,
         event: event[0].value,
         submission: submission[0].value
