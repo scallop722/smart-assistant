@@ -1,5 +1,5 @@
 var admin = require("firebase-admin");
-var serviceAccount = require("./smart-assistant-9f6ad-firebase-adminsdk-dya3y-0d2c9fb816.json");
+var serviceAccount = require("./smart-assistant-admin-sdk.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
