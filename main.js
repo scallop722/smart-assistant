@@ -47,3 +47,7 @@ ipcMain.handle("register", (event, data) => {
   });
 });
 
+ipcMain.handle("getSchedule", async (event, date) => {
+  const schedule = await calendar.doc(date).get();
+  return schedule.data();
+});

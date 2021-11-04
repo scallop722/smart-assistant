@@ -115,3 +115,7 @@ async function register() {
     submission: submission[0].value,
   });
 }
+
+async function getSchedule(date) {
+  return await window.myapi.getSchedule(date);
+}
