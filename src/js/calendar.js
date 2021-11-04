@@ -8,20 +8,23 @@ var selectMonth = today.getMonth() + 1;
 var selectDay = today.getDate();
 
 // 初期表示
-window.onload = function () {
-  showProcess(today, calendar);
+window.onload = async function () {
+  await showProcess(today, calendar);
 };
 
 function createDateSelectEvent() {
-  document.querySelectorAll("#calendar td").forEach(function (td) {
+  document.querySelectorAll("#calendar td:not(.disabled)").forEach(function (td) {
     td.addEventListener(
       "click",
       function (e) {
         selectYear = showDate.getFullYear();
         selectMonth = showDate.getMonth() + 1;
-        selectDay = Number(e.target.innerText);
+        selectDay = Number(e.target.getAttribute("data-date"));
 
-        showProcess(showDate);
+        // もともと選択されていた要素の色を削除
+        document.querySelector(".today").classList.remove("today");
+        // 
+        document.querySelector(`td[data-date='${selectDay}']:not(.disabled)`).classList.add("today");
       },
       false
     );
@@ -29,32 +32,38 @@ function createDateSelectEvent() {
 }
 
 // 前の月表示
-function prev() {
+async function prev() {
   showDate.setMonth(showDate.getMonth() - 1);
+  selectYear = showDate.getFullYear();
+  selectMonth = showDate.getMonth() + 1;
+  selectDay = 1;
   showProcess(showDate);
 }
 
 // 次の月表示
-function next() {
+async function next() {
   showDate.setMonth(showDate.getMonth() + 1);
+  selectYear = showDate.getFullYear();
+  selectMonth = showDate.getMonth() + 1;
+  selectDay = 1;
   showProcess(showDate);
 }
 
 // カレンダー表示
-function showProcess(date) {
+async function showProcess(date) {
   var year = date.getFullYear();
   var month = date.getMonth();
   document.querySelector("#header").innerHTML =
     year + "年 " + (month + 1) + "月";
 
-  var calendar = createProcess(year, month);
+  var calendar = await createProcess(year, month);
   document.querySelector("#calendar").innerHTML = calendar;
 
   createDateSelectEvent();
 }
 
 // カレンダー作成
-function createProcess(year, month) {
+async function createProcess(year, month) {
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
   for (var i = 0; i < week.length; i++) {
@@ -87,14 +96,15 @@ function createProcess(year, month) {
         // 当月の日付を曜日に照らし合わせて設定
         count++;
         const text = count + "<br>" + "宿題:なし";
+        const schedule = await getSchedule(year + "-" + (month + 1) + "-" + count);
         if (
           year == selectYear &&
           month == selectMonth - 1 &&
           count == selectDay
         ) {
-          calendar += "<td class='today'>" + text + "</td>";
+          calendar += `<td class='today' data-date='${count}'>` + text + "</td>";
         } else {
-          calendar += "<td>" + text + "</td>";
+          calendar += `<td data-date='${count}'>` + text + "</td>";
         }
       }
     }
