@@ -95,8 +95,15 @@ async function createProcess(year, month) {
       } else {
         // 当月の日付を曜日に照らし合わせて設定
         count++;
-        const text = count + "<br>" + "宿題:なし";
-        const schedule = await getSchedule(year + "-" + (month + 1) + "-" + count);
+
+        // その日付の予定の取得
+        const schedule = await getSchedule(`${year}-${month + 1}-${count}`);
+
+        const event = (schedule && schedule.event) ? `<br>予定：${schedule.event}` : '<br>予定：無し';
+        const homework = (schedule && schedule.homework) ? `<br>宿題：${schedule.homework}` : '<br>宿題：無し';
+        const submissions = (schedule && schedule.submissions) ? `<br>提出物：${schedule.submissions}` : '<br>提出物：無し';
+
+        const text = count + event + homework + submissions;
         if (
           year == selectYear &&
           month == selectMonth - 1 &&
