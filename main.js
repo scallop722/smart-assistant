@@ -1,5 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const VoiceText = require('voicetext');
+const fs = require('fs');
+const player = require("./WavPlayer");
+const Iconv = require("iconv")
+
+const voice = new VoiceText('vg5xe2hrcn87c9kw');
 
 var admin = require("firebase-admin");
 var serviceAccount = require("./smart-assistant-admin-sdk.json");
@@ -50,4 +56,20 @@ ipcMain.handle("register", (event, data) => {
 ipcMain.handle("getSchedule", async (event, date) => {
   const schedule = await calendar.doc(date).get();
   return schedule.data();
+});
+
+ipcMain.handle("talkSchedule", async (event, date) => {
+  const schedule = await calendar.doc(date).get();
+  console.log(schedule.data());
+  console.log(schedule.data().event);
+  const text = `今日のスケジュールは${schedule.data().event}です。`;
+  console.log('aa');
+
+  // voice
+  //   .speaker(voice.SPEAKER.HIKARI)
+  //   .speak(text, (e, buf) => {
+  //     fs.writeFile('./schedule.wav', buf, 'binary', (e) => {})
+  //   });
+  // player.play("./schedule.wav");
+  return;
 });

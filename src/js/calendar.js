@@ -124,9 +124,10 @@ async function register() {
   const homework = document.getElementsByName("homework");
   const event = document.getElementsByName("event");
   const submission = document.getElementsByName("submissions");
-
+  const targetDate = selectYear + "-" + selectMonth + "-" + selectDay;
+  await window.myapi.talkTodaySchedule(targetDate);
   await window.myapi.register({
-    date: selectYear + "-" + selectMonth + "-" + selectDay,
+    date: targetDate,
     homework: homework[0].value,
     event: event[0].value,
     submission: submission[0].value,
@@ -135,4 +136,9 @@ async function register() {
 
 async function getSchedule(date) {
   return await window.myapi.getSchedule(date);
+}
+
+async function talkSchedule() {
+  const targetDate = selectYear + "-" + selectMonth + "-" + selectDay;
+  return await window.myapi.talkSchedule(targetDate);
 }
