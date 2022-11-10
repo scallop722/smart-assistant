@@ -26,7 +26,7 @@ function createWindow() {
     },
   });
   win.loadFile("./src/html/calendar.html");
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
   win.on("closed", () => {
     win = null;
   });
