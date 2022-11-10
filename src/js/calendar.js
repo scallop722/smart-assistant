@@ -125,7 +125,6 @@ async function register() {
   const event = document.getElementsByName("event");
   const submission = document.getElementsByName("submissions");
   const targetDate = selectYear + "-" + selectMonth + "-" + selectDay;
-  await window.myapi.talkTodaySchedule(targetDate);
   await window.myapi.register({
     date: targetDate,
     homework: homework[0].value,
