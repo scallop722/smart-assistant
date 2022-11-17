@@ -26,5 +26,10 @@
   },
   "devDependencies": {
     "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "win": {
+      "icon": "icon.png"
+    }
   }
 }
