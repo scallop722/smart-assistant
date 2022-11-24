@@ -5,6 +5,7 @@ const fs = require('fs');
 const VoiceText = require('voicetext');
 const voice = new VoiceText('vg5xe2hrcn87c9kw');
 const player = require("./WavPlayer");
+const weather = require("./weather");
 
 var admin = require("firebase-admin");
 var serviceAccount = require("./smart-assistant-admin-sdk.json");
@@ -60,7 +61,7 @@ ipcMain.handle("getSchedule", async (event, date) => {
 ipcMain.handle("talkSchedule", async (e, date) => {
   const schedule = await calendar.doc(date).get();
   const scheduleData = schedule.data();
-  const pre = `今日の予定を案内します。`;
+  const pre = `${date}の予定を案内します。`;
 
   const event = (scheduleData && scheduleData.event) ? `行事は${scheduleData.event}で、` : '行事はundefinedで、';
   const homework = (scheduleData && scheduleData.homework) ? `宿題は${scheduleData.homework}で、` : '宿題はundefinedで、';
@@ -74,5 +75,20 @@ ipcMain.handle("talkSchedule", async (e, date) => {
       fs.writeFile('./schedule.wav', buf, 'binary', (e) => {})
       player.play("./schedule.wav");
     });
+
+  return;
+});
+
+ipcMain.handle("talkWeather", async (e, date) => {
+  const weatherText = await weather.getWeather(date); 
+  const text = `${date}の天気は${weatherText}です。`;
+
+  voice
+    .speaker(voice.SPEAKER.HIKARI)
+    .speak(text, (e, buf) => {
+      fs.writeFile('./weather.wav', buf, 'binary', (e) => {})
+      player.play("./weather.wav");
+    });
+
   return;
 });

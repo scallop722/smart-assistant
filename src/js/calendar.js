@@ -141,3 +141,8 @@ async function talkSchedule() {
   const targetDate = selectYear + "-" + selectMonth + "-" + selectDay;
   return await window.myapi.talkSchedule(targetDate);
 }
+
+async function talkWeather() {
+  const targetDate = selectYear + "-" + selectMonth + "-" + selectDay;
+  return await window.myapi.talkWeather(targetDate);
+}
